@@ -28,7 +28,7 @@ module.exports = async function sendEmail(emailData, res) {
             from: emailData.email || "anubhavpandeyayush@gmail.com", // Change this to a proper sender email address
             to: "anubhavpandeyayush@gmail.com",
             subject: emailData.subject,
-            text: emailData.message
+            text: `From ${emailData.email} \n ${emailData.message}`
         };
     
         // Send the email
