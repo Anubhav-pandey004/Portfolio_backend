@@ -6,6 +6,8 @@ router
     .route("/sendEmail")
     .post(sendEmail)  
 router
-    .route("/")
-    .get(res.send("Welcome to my portfolio follow the link https://anubhavpandey.netlify.app/ "))
+  .route("/")
+  .get((req, res) => {
+    res.send("Welcome to my portfolio! Follow the link: https://anubhavpandey.netlify.app/");
+  });
 module.exports=router 
