@@ -46,7 +46,7 @@ module.exports = async function sendEmail(emailData, res) {
     
         // Respond with error message
         return res.status(500).json({
-            message: "Email not sent",
+            message: error,
             error: true,
             success: false
         });
