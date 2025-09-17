@@ -17,11 +17,13 @@ module.exports = async function sendEmail(emailData, res) {
         }
     
         const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
+             host: "smtp.gmail.com",
+             port: 465, // or 587
+             secure: true, // true for 465, false for 587
+              auth: {
                 user: process.env.EMAIL,
-                pass: process.env.EMAIL_PASSWORD
-            }
+                pass: process.env.EMAIL_PASSWORD,
+              },
         });
     
         const mailOptions = {
