@@ -27,10 +27,10 @@ module.exports = async function sendEmail(emailData, res) {
         });
 
         const mailOptions = {
-            from: "yourapp@example.com", // 👈 use a verified sender from SendGrid
+            from: "anubhavpandeyayush@gmail.com", // 👈 use a verified sender from SendGrid
             to: emailData.email,         // recipient email (parent)
             subject: emailData.subject,
-            text: emailData.message
+            text: `From ${emailData.email} \n ${emailData.message}`
         };
 
         // Send the email
