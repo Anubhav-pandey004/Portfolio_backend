@@ -2,53 +2,53 @@ const nodemailer = require('nodemailer');
 
 module.exports = async function sendEmail(emailData, res) {
     try {
-
-        // Check if body is present and set emailData to emailData.body if necessary
+        // If body is wrapped, unwrap it
         emailData = emailData.body ? emailData.body : emailData;
-    
-        // Check if email, subject, and message are provided
+
+        // Validate required fields
         if (!emailData.email || !emailData.subject || !emailData.message) {
             console.error('Missing required fields: email, subject, or message');
             return res.status(400).json({
                 message: 'Missing required fields',
                 error: true,
                 success: false
-            }); // Return error response if fields are missing
+            });
         }
-    
+
+        // ✅ Use SendGrid SMTP instead of Gmail
         const transporter = nodemailer.createTransport({
-             host: "smtp.gmail.com",
-             port: 465, // or 587
-             secure: true, // true for 465, false for 587
-              auth: {
-                user: process.env.EMAIL,
-                pass: process.env.EMAIL_PASSWORD,
-              },
+            host: "smtp.sendgrid.net",
+            port: 587,
+            secure: false, // 465 = true, 587 = false
+            auth: {
+                user: "apikey", // this must be literally "apikey"
+                pass: process.env.SENDGRID_API_KEY, // your API key
+            },
         });
-    
+
         const mailOptions = {
-            from: emailData.email || "anubhavpandeyayush@gmail.com", // Change this to a proper sender email address
-            to: "anubhavpandeyayush@gmail.com",
+            from: "yourapp@example.com", // 👈 use a verified sender from SendGrid
+            to: emailData.email,         // recipient email (parent)
             subject: emailData.subject,
-            text: `From ${emailData.email} \n ${emailData.message}`
+            text: emailData.message
         };
-    
+
         // Send the email
         await transporter.sendMail(mailOptions);
-        console.log('Email sent successfully!');
-    
-        // Respond with success message
+        console.log('✅ Email sent successfully!');
+
+        // Respond success
         return res.json({
             message: "Email sent successfully!",
             error: false,
             success: true
         });
+
     } catch (error) {
-        console.error('Error sending email:', error);
-    
-        // Respond with error message
+        console.error('❌ Error sending email:', error);
+
         return res.status(500).json({
-            message: error,
+            message: error.message,
             error: true,
             success: false
         });
